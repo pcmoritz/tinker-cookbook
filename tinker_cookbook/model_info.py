@@ -79,6 +79,14 @@ def get_moonshot_info() -> dict[str, ModelAttributes]:
     }
 
 
+@cache
+def get_glm_info() -> dict[str, ModelAttributes]:
+    org = "zai-org"
+    return {
+        "GLM-4.7-Flash": ModelAttributes(org, "4.7", "30B-A3B", True),
+    }
+
+
 def get_model_attributes(model_name: str) -> ModelAttributes:
     model_name = model_name.split(":")[0]
     org, model_version_full = model_name.split("/")
@@ -93,6 +101,8 @@ def get_model_attributes(model_name: str) -> ModelAttributes:
         return get_gpt_oss_info()[model_version_full]
     elif org == "moonshotai":
         return get_moonshot_info()[model_version_full]
+    elif org == "zai-org":
+        return get_glm_info()[model_version_full]
     else:
         raise ValueError(f"Unknown model: {model_name}")
 
@@ -129,6 +139,8 @@ def get_recommended_renderer_names(model_name: str) -> list[str]:
         return ["gpt_oss_no_sysprompt", "gpt_oss_medium_reasoning"]
     elif attributes.organization == "moonshotai":
         return ["kimi_k2"]
+    elif attributes.organization == "zai-org":
+        return ["glm4", "glm4_disable_thinking"]
     else:
         raise ValueError(f"Unknown model: {model_name}")
 

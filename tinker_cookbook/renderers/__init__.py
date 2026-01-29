@@ -32,6 +32,7 @@ from tinker_cookbook.renderers.base import (
 
 # Renderer classes used directly by tests
 from tinker_cookbook.renderers.deepseek_v3 import DeepSeekV3ThinkingRenderer
+from tinker_cookbook.renderers.glm4 import GLM4Renderer
 from tinker_cookbook.renderers.gpt_oss import GptOssRenderer
 from tinker_cookbook.renderers.qwen3 import Qwen3Renderer
 
@@ -53,6 +54,8 @@ def get_renderer(
             - "deepseekv3": DeepSeek V3 (defaults to non-thinking mode)
             - "deepseekv3_disable_thinking": DeepSeek V3 non-thinking (alias)
             - "deepseekv3_thinking": DeepSeek V3 thinking mode
+            - "glm4": GLM-4.7 with thinking enabled
+            - "glm4_disable_thinking": GLM-4.7 with thinking disabled
             - "kimi_k2": Kimi K2 Thinking format
             - "gpt_oss_no_sysprompt": GPT-OSS without system prompt
             - "gpt_oss_low_reasoning": GPT-OSS with low reasoning
@@ -70,6 +73,7 @@ def get_renderer(
     """
     # Import renderer classes lazily to avoid circular imports and keep exports minimal
     from tinker_cookbook.renderers.deepseek_v3 import DeepSeekV3DisableThinkingRenderer
+    from tinker_cookbook.renderers.glm4 import GLM4DisableThinkingRenderer
     from tinker_cookbook.renderers.gpt_oss import GptOssRenderer
     from tinker_cookbook.renderers.kimi_k2 import KimiK2Renderer
     from tinker_cookbook.renderers.llama3 import Llama3Renderer
@@ -105,6 +109,10 @@ def get_renderer(
         return DeepSeekV3DisableThinkingRenderer(tokenizer)
     elif name == "deepseekv3_thinking":
         return DeepSeekV3ThinkingRenderer(tokenizer)
+    elif name == "glm4":
+        return GLM4Renderer(tokenizer)
+    elif name == "glm4_disable_thinking":
+        return GLM4DisableThinkingRenderer(tokenizer)
     elif name == "kimi_k2":
         return KimiK2Renderer(tokenizer)
     elif name == "gpt_oss_no_sysprompt":
@@ -142,6 +150,7 @@ __all__ = [
     "get_renderer",
     # Renderer classes (used by tests)
     "DeepSeekV3ThinkingRenderer",
+    "GLM4Renderer",
     "GptOssRenderer",
     "Qwen3Renderer",
 ]
